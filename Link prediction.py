@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-0;95;0c# coding: utf-8
 
 # # Link prediction
 # In this notebook we do link prediction starting from the embeddings
