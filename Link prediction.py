@@ -2,8 +2,10 @@
 
 # # Link prediction
 # In this notebook we do link prediction starting from the embeddings
-# previously obtained from
+# previously obtained from Skipgram jupyter notebook
 
+# Graphs and embeddings used below are available here:
+# http://doi.org/10.5281/zenodo.4011267
 # In[1]:
 
 
