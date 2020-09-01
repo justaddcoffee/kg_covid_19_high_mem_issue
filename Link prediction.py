@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding: utf-8
 
 # # Link prediction
 # In this notebook we do link prediction starting from the embeddings
@@ -68,13 +67,13 @@ def build_link_prediction_model(input_shape:int):
 from ensmallen_graph import EnsmallenGraph
 
 graph = EnsmallenGraph.from_csv(
-    edge_path="/home/jtr4v/merged-kg_edges.tsv",
+    edge_path="data/merged-kg_edges.tsv",
     sources_column="subject",
     destinations_column="object",
     directed=False,
     edge_types_column="edge_label",
     default_edge_type="biolink:association",
-    node_path="/home/jtr4v/merged-kg_nodes.tsv",
+    node_path="data/merged-kg_nodes.tsv",
     nodes_column="id",
     node_types_column="category",
     default_node_type="biolink:NamedThing",
@@ -181,7 +180,7 @@ def task_generator(
     seed:int=42
 
     """
-    for path in tqdm(glob("*embedding.npy"), desc="Embedding"):
+    for path in tqdm(glob("data/*embedding.npy"), desc="Embedding"):
         model_name = path.split("_")[0]
         embedding = np.load(path)
         for method in tqdm(EdgeTransformer.methods, desc="Methods", leave=False):
