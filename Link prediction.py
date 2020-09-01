@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-0;95;0c# coding: utf-8
+# coding: utf-8
 
 # # Link prediction
 # In this notebook we do link prediction starting from the embeddings
@@ -84,24 +84,71 @@ graph = EnsmallenGraph.from_csv(
 )
 
 
+# In[5]:
+
+
+graph.report()
+
+
 # ## Defining holdouts and tasks data generator
 # We are going to create the same edge embeddings as in the training of the embeddings.
 
-# In[ ]:
+# In[6]:
 
 
 seed = 42
 train_percentage = 0.8
 
 pos_training, pos_validation = graph.connected_holdout(seed, train_percentage)
-neg_training, neg_validation = graph.sample_negatives(
-    seed=seed,
-    negatives_number=graph.get_edges_number(),
-    allow_selfloops=False
-).random_holdout(seed=seed, train_percentage=train_percentage)
 
 
-# In[ ]:
+# In[7]:
+
+
+# python /home/jtr4v/kg_covid_19_drug_analyses/kg-covid-19/run.py edges -n /home/jtr4v/merged-kg_nodes-min.tsv -e /home/jtr4v/merged-kg_edges-min.tsv
+
+
+# In[8]:
+
+
+# neg_training, neg_validation = graph.sample_negatives(
+#    seed=seed,
+#    negatives_number=graph.get_edges_number(),
+#    allow_selfloops=False
+#).random_holdout(seed=seed, train_percentage=train_percentage)
+
+
+# In[21]:
+
+
+from ensmallen_graph import EnsmallenGraph
+
+neg_validation = EnsmallenGraph.from_csv(
+    edge_path="/home/jtr4v/kg_covid_19_drug_analyses/kg-covid-19/data/edges/neg_test_edges.tsv",
+    sources_column="subject",
+    destinations_column="object",
+    directed=False,
+    edge_types_column="edge_label",
+    default_node_type="biolink:NamedThing",
+    ignore_duplicated_edges=True,
+    ignore_duplicated_nodes=True,
+    force_conversion_to_undirected=True
+)
+
+neg_training = EnsmallenGraph.from_csv(
+    edge_path="/home/jtr4v/kg_covid_19_drug_analyses/kg-covid-19/data/edges/neg_train_edges.tsv",
+    sources_column="subject",
+    destinations_column="object",
+    directed=False,
+    edge_types_column="edge_label",
+    default_node_type="biolink:NamedThing",
+    ignore_duplicated_edges=True,
+    ignore_duplicated_nodes=True,
+    force_conversion_to_undirected=True
+)
+
+
+# In[25]:
 
 
 from tqdm.auto import tqdm
@@ -381,4 +428,10 @@ for i, (method1, scores1) in enumerate(scored_per_method):
         print(
             method1, method2, wilcoxon(scores1, scores2)
         )
+
+
+# In[ ]:
+
+
+
 
